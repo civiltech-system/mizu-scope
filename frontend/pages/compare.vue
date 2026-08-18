@@ -10,10 +10,10 @@
 
     <!-- 比較テーブル -->
     <div v-if="allItems.length" class="overflow-x-auto mb-8">
-      <table class="w-full text-sm border-collapse">
+      <table class="text-sm border-collapse">
         <thead>
           <tr class="border-b-2 border-gray-200">
-            <th class="text-left px-4 py-3 text-gray-500 font-medium w-40">項目</th>
+            <th class="sticky left-0 z-10 bg-white text-left px-4 py-3 text-gray-500 font-medium w-40 min-w-[160px]">項目</th>
             <th
               v-for="item in allItems"
               :key="item.key"
@@ -33,7 +33,7 @@
           <CompareRow label="Na (mg/L)"    :values="allItems.map((i) => i.sodium)" />
           <CompareRow label="TDS (mg/L)"   :values="allItems.map((i) => i.tds)" highlight="min" />
           <tr class="hover:bg-gray-50">
-            <td class="px-4 py-3 text-gray-500">コーヒー適性</td>
+            <td class="sticky left-0 z-10 bg-white px-4 py-3 text-gray-500">コーヒー適性</td>
             <td v-for="item in allItems" :key="item.key" class="px-4 py-3 text-center">
               <span v-for="i in 5" :key="i" class="text-base" :class="i <= (item.coffee_score ?? 0) ? 'opacity-100' : 'opacity-20'">☕</span>
             </td>
@@ -108,7 +108,7 @@ const CompareRow = defineComponent({
 
     return () =>
       h("tr", { class: "hover:bg-gray-50" }, [
-        h("td", { class: "px-4 py-3 text-gray-500" }, props.label),
+        h("td", { class: "sticky left-0 z-10 bg-white px-4 py-3 text-gray-500" }, props.label),
         ...(props.values ?? []).map((v, i) => {
           const isHighlight =
             v != null &&

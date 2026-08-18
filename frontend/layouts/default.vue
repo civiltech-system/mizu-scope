@@ -4,7 +4,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <NuxtLink to="/" class="flex items-center space-x-2">
-            <span class="text-2xl font-bold text-blue-600">MizuMap</span>
+            <span class="text-2xl font-bold text-blue-600">MizuScope</span>
             <span class="text-sm text-gray-400 hidden sm:inline">水質マップ</span>
           </NuxtLink>
           <nav class="flex items-center space-x-6 text-sm font-medium text-gray-600">
@@ -22,7 +22,7 @@
 
     <footer class="bg-gray-800 text-gray-400 text-sm py-8 mt-16">
       <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-        <p class="font-medium text-gray-300">MizuMap — 日本の水道水水質情報マップ</p>
+        <p class="font-medium text-gray-300">MizuScope — 日本の水道水水質情報マップ</p>
         <p class="text-xs text-gray-500">
           表示データは各自治体の公開情報に基づきます。最新情報は各自治体へご確認ください。
         </p>

@@ -66,13 +66,28 @@
 </template>
 
 <script setup lang="ts">
+import { defineComponent, h } from "vue";
+import WaterMap from "~/components/map/WaterMap.vue";
+
 definePageMeta({ layout: "default" });
+
+const LegendRow = defineComponent({
+  props: { color: String, label: String },
+  setup(props) {
+    return () =>
+      h("div", { class: "flex items-center gap-2" }, [
+        h("span", { class: `w-3.5 h-3.5 rounded-full ${props.color} inline-block` }),
+        h("span", { class: "text-gray-600 text-xs" }, props.label),
+      ]);
+  },
+});
 
 const config = useRuntimeConfig();
 
-const { data: geojson, pending } = await useAsyncData("regions-geojson", () =>
-  $fetch<{ type: string; features: unknown[] }>(`${config.public.apiBase}/api/v1/regions`)
-);
+const { data: geojson, pending } = await useAsyncData("regions-geojson", () => {
+  const base = import.meta.server ? config.apiBase : config.public.apiBase;
+  return $fetch<{ type: string; features: unknown[] }>(`${base}/api/v1/regions`);
+});
 
 type FilterValue = "all" | "soft" | "medium" | "hard" | "very_hard";
 const activeFilter = ref<FilterValue>("all");
@@ -97,20 +112,3 @@ const filteredGeoJson = computed(() => {
 });
 </script>
 
-<!-- Inline sub-component for legend rows -->
-<script lang="ts">
-import { defineComponent, h } from "vue";
-
-const LegendRow = defineComponent({
-  props: { color: String, label: String },
-  setup(props) {
-    return () =>
-      h("div", { class: "flex items-center gap-2" }, [
-        h("span", { class: `w-3.5 h-3.5 rounded-full ${props.color} inline-block` }),
-        h("span", { class: "text-gray-600 text-xs" }, props.label),
-      ]);
-  },
-});
-
-export { LegendRow };
-</script>

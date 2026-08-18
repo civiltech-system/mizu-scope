@@ -1,9 +1,12 @@
 <template>
-  <div ref="mapContainer" class="w-full h-full" />
+  <div class="w-full h-full">
+    <div ref="mapContainer" class="w-full h-full" />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from "vue";
+import maplibregl from "maplibre-gl";
 
 interface GeoJSON {
   type: string;
@@ -25,11 +28,9 @@ const COLORS: Record<string, string> = {
   hard:      "#EAB308",
   very_hard: "#EF4444",
   unknown:   "#9CA3AF",
-};
+};  
 
-onMounted(async () => {
-  const maplibregl = await import("maplibre-gl");
-
+onMounted(() => {
   map = new maplibregl.Map({
     container: mapContainer.value!,
     style: {
@@ -112,7 +113,7 @@ function addLayers() {
   m.on("click", "points", (e: any) => {
     const p = e.features[0].properties;
     const coords = e.features[0].geometry.coordinates.slice();
-    new (maplibregl as any).Popup({ offset: 12 })
+    new maplibregl.Popup({ offset: 12 })
       .setLngLat(coords)
       .setHTML(`
         <div style="min-width:180px;padding:4px">
@@ -129,15 +130,10 @@ function addLayers() {
   m.on("mouseleave", "points", () => { m.getCanvas().style.cursor = ""; });
 
   // クラスタクリックでズーム
-  m.on("click", "clusters", (e: any) => {
+  m.on("click", "clusters", async (e: any) => {
     const [feature] = m.queryRenderedFeatures(e.point, { layers: ["clusters"] });
-    m.getSource("regions").getClusterExpansionZoom(
-      feature.properties.cluster_id,
-      (err: unknown, zoom: number) => {
-        if (err) return;
-        m.easeTo({ center: feature.geometry.coordinates, zoom });
-      }
-    );
+    const zoom = await m.getSource("regions").getClusterExpansionZoom(feature.properties.cluster_id);
+    m.easeTo({ center: feature.geometry.coordinates, zoom });
   });
 }
 

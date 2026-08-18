@@ -80,9 +80,6 @@
         </NuxtLink>
       </div>
 
-      <!-- JSON-LD 構造化データ -->
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <script type="application/ld+json" v-html="jsonLd" />
     </template>
   </div>
 </template>
@@ -135,17 +132,24 @@ const pageDescription = computed(() => {
   return `${regionName.value}の水道水は硬度${q.hardness}mg/L・pH${q.ph}の${waterTypeJa.value}です。飲用${q.drinkable ? "可" : "要確認"}。コーヒー適性・詳細ミネラル情報を確認できます。`;
 });
 
-const jsonLd = computed(() => {
-  if (!region.value) return "{}";
-  return JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Place",
-    name: `${regionName.value}の水道水`,
-    description: pageDescription.value,
-    geo: region.value.lat
-      ? { "@type": "GeoCoordinates", latitude: region.value.lat, longitude: region.value.lng }
-      : undefined,
-  });
+useHead({
+  script: computed(() => {
+    if (!region.value) return [];
+    return [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Place",
+          name: `${regionName.value}の水道水`,
+          description: pageDescription.value,
+          geo: region.value.lat
+            ? { "@type": "GeoCoordinates", latitude: region.value.lat, longitude: region.value.lng }
+            : undefined,
+        }),
+      },
+    ];
+  }),
 });
 
 // ─── Inline sub-component ────────────────────────────────────────────────────
