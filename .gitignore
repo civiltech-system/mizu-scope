@@ -1,0 +1,33 @@
+# === OS / Editor ===
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# === Secrets / Env ===
+# 実際の環境変数は追跡しない（.env.example は共有するため除外しない）
+.env
+.env.*
+!.env.example
+
+# === Node / Nuxt (frontend) ===
+node_modules/
+.nuxt/
+.output/
+dist/
+.nitro/
+.cache/
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# === Python / FastAPI (backend) ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
