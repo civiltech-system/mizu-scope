@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from "vue";
-import maplibregl from "maplibre-gl";
+import type { Map as MapLibreMap } from "maplibre-gl";
 
 interface GeoJSON {
   type: string;
@@ -20,7 +20,8 @@ interface GeoJSON {
 const props = defineProps<{ regions: GeoJSON }>();
 
 const mapContainer = ref<HTMLElement | null>(null);
-let map: unknown = null;
+let map: MapLibreMap | null = null;
+let maplibregl: typeof import("maplibre-gl").default;
 
 const COLORS: Record<string, string> = {
   soft:      "#3B82F6",
@@ -30,7 +31,8 @@ const COLORS: Record<string, string> = {
   unknown:   "#9CA3AF",
 };  
 
-onMounted(() => {
+onMounted(async () => {
+  maplibregl = (await import("maplibre-gl")).default;
   map = new maplibregl.Map({
     container: mapContainer.value!,
     style: {

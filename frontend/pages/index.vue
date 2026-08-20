@@ -29,7 +29,7 @@
 
       <!-- Map (client only — MapLibre requires browser APIs) -->
       <ClientOnly>
-        <WaterMap
+        <LazyMapWaterMap
           v-if="filteredGeoJson"
           :regions="filteredGeoJson"
           class="absolute inset-0"
@@ -67,7 +67,6 @@
 
 <script setup lang="ts">
 import { defineComponent, h } from "vue";
-import WaterMap from "~/components/map/WaterMap.vue";
 
 definePageMeta({ layout: "default" });
 
@@ -111,4 +110,3 @@ const filteredGeoJson = computed(() => {
   };
 });
 </script>
-

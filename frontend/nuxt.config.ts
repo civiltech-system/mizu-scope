@@ -9,6 +9,11 @@ export default defineNuxtConfig({
     ssr: {
       noExternal: ["maplibre-gl"],
     },
+    build: {
+      // MapLibre is loaded only when the client-side map mounts. Its standalone
+      // vendor bundle is intentionally larger than Vite's generic 500 kB limit.
+      chunkSizeWarningLimit: 850,
+    },
   },
   runtimeConfig: {
     apiBase: process.env.NUXT_API_BASE || "http://backend:8000",
